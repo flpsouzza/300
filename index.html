@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escala T.I Noturno - COR RIO</title>
+    <title>Plantão Noturno</title>
     <style>
-        /* DESIGN INSTITUCIONAL COR-RIO + TOQUE DE BRONZE SÓBRIO (300)
-           Foco: Alta legibilidade, profissionalismo e responsividade.
-        */
+        /* DESIGN PREMIUM, MINIMALISTA E RESPONSIVO */
         :root {
-            --rio-blue: #002D5E;      /* Azul Escuro Oficial da Prefeitura */
-            --rio-light: #004A8D;     /* Azul Claro Complementar */
-            --bronze-accent: #8C6239; /* Bronze Sóbrio (Referência sutil ao tema 300) */
-            --bg-body: #EAEFF3;
+            --primary-blue: #0F172A;   /* Azul escuro ardósia super moderno */
+            --accent-bronze: #B45309;  /* Bronze terroso sofisticado */
+            --bg-body: #F8FAFC;        /* Fundo claro e descansado */
             --bg-card: #FFFFFF;
             --text-main: #1E293B;
             --text-muted: #64748B;
-            --border-color: #CBD5E1;
+            --border-color: #E2E8F0;
         }
 
         * { 
@@ -33,155 +30,126 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
-        /* Container Principal com Proporções de Painel de Gestão */
+        /* Container Principal com cantos bem arredondados e sombra suave */
         .calendar-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             background-color: var(--bg-card);
-            border-radius: 6px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border-top: 6px solid var(--rio-blue);
         }
 
-        /* CABEÇALHO INSTITUCIONAL */
+        /* CABEÇALHO SUPER CLEAN */
         header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            padding: 25px 40px;
-            background: linear-gradient(to bottom, #FFFFFF, #F8FAFC);
-            border-bottom: 1px solid #E2E8F0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        /* Logotipo Vetorial Customizado (Prefeitura + COR) */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-text-main {
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--rio-blue);
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .logo-text-sub {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .divider {
-            width: 1px;
-            height: 45px;
-            background-color: #CBD5E1;
-        }
-
-        .logo-cor {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--rio-light);
-            line-height: 1.2;
-        }
-
-        /* Bloco de Título (Mês e Ano Separados) */
-        .title-block {
             text-align: center;
+            padding: 40px 24px 24px 24px;
+            background: #FFFFFF;
+            gap: 16px;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .month-title {
-            font-size: 38px;
+            font-size: 46px;
             font-weight: 800;
-            color: var(--rio-blue);
+            color: var(--primary-blue);
             text-transform: uppercase;
             letter-spacing: 3px;
             line-height: 1;
         }
 
         .year-title {
-            font-size: 20px;
-            color: var(--bronze-accent);
+            font-size: 16px;
+            color: var(--accent-bronze);
             font-weight: 700;
-            letter-spacing: 5px;
-            margin-top: 4px;
-        }
-
-        .description {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 600;
+            letter-spacing: 8px;
+            margin-top: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        /* Controles de Navegação */
+        /* Controles de Navegação Minimalistas */
         .nav-controls {
             display: flex;
             gap: 8px;
+            margin-top: 8px;
         }
 
         .btn-nav {
             background-color: #FFFFFF;
-            color: var(--rio-blue);
-            border: 1px solid var(--rio-blue);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             padding: 8px 18px;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 20px; /* Botões pílula modernos */
             transition: all 0.2s ease;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-nav:hover {
-            background-color: var(--rio-blue);
+            background-color: var(--primary-blue);
             color: #FFFFFF;
+            border-color: var(--primary-blue);
         }
 
         /* CONTEÚDO DO CALENDÁRIO */
         .calendar-content {
-            padding: 25px 40px;
+            padding: 0 24px 24px 24px;
             overflow-x: auto;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             table-layout: fixed;
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         th {
-            background-color: var(--rio-blue);
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 600;
+            background-color: #F8FAFC;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            padding: 12px;
-            border: 1px solid #001A38;
+            padding: 14px;
+            border-bottom: 1px solid var(--border-color);
             letter-spacing: 1px;
         }
 
         td {
-            border: 1px solid #E2E8F0;
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             vertical-align: top;
-            padding: 8px;
-            height: 115px;
+            padding: 10px;
+            height: 105px;
             position: relative;
+            background-color: #FFFFFF;
+        }
+
+        table tr td:last-child {
+            border-right: none;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
         }
 
         .empty-cell { 
@@ -189,8 +157,8 @@
         }
 
         .today-cell { 
-            background-color: #FFFBEB; 
-            border: 2px solid var(--bronze-accent) !important; 
+            background-color: #FFFBEB; /* Amarelo sutil e confortável */
+            border: 2px solid #F59E0B !important; 
         }
 
         .date-row {
@@ -200,26 +168,26 @@
         }
 
         .date-num {
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 13px;
             color: #94A3B8;
         }
 
-        /* Indicador circular idêntico ao modelo original */
+        /* Indicador circular moderno */
         .duty-day-circle {
-            width: 26px;
-            height: 26px;
-            border: 2px solid var(--rio-light);
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent-bronze);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--rio-light);
-            font-size: 13px;
-            font-weight: 800;
+            color: var(--accent-bronze);
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        /* ETIQUETAS E BADGES DOS PLANTÃO */
+        /* BADGES ARREDONDADOS E CORES PASTÉIS SÓBRIAS */
         .badges-list {
             display: flex;
             flex-direction: column;
@@ -227,31 +195,32 @@
         }
 
         .badge {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: #FFFFFF;
-            padding: 3px 8px;
-            border-radius: 3px;
+            padding: 4px 8px;
+            border-radius: 6px;
             text-transform: uppercase;
-            width: fit-content;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-            border-left: 3px solid rgba(0,0,0,0.2);
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            letter-spacing: 0.5px;
         }
 
-        /* Cores Sóbrias Ajustadas */
-        .b-julio { background-color: #A82020; }
+        /* Paleta atualizada para tons flat premium */
+        .b-julio { background-color: #E11D48; }
         .b-carlos { background-color: #D97706; }
         .b-leticia { background-color: #0891B2; }
-        .b-gustavo { background-color: #C2410C; }
-        .b-tatiane { background-color: #1D4ED8; }
-        .b-leandro { background-color: #6D28D9; }
-        .b-felipe { background-color: #15803D; }
+        .b-gustavo { background-color: #EA580C; }
+        .b-tatiane { background-color: #2563EB; }
+        .b-leandro { background-color: #7C3AED; }
+        .b-felipe { background-color: #16A34A; }
 
-        /* RODAPÉ E CRÉDITOS */
+        /* RODAPÉ LIMPO */
         footer {
-            padding: 18px 40px;
+            padding: 20px 24px;
             background-color: #F8FAFC;
-            border-top: 1px solid #E2E8F0;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -261,8 +230,8 @@
 
         .legend-container {
             display: flex;
-            gap: 20px;
-            font-size: 12px;
+            gap: 16px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -271,27 +240,27 @@
         .legend-item { 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 6px; 
         }
 
         .l-dot { 
-            width: 12px; 
-            height: 12px; 
+            width: 10px; 
+            height: 10px; 
             border-radius: 50%; 
         }
         
-        .l-active { border: 2px solid var(--rio-light); }
-        .l-today { background-color: #FFFBEB; border: 2px solid var(--bronze-accent); }
+        .l-active { border: 2px solid var(--accent-bronze); }
+        .l-today { background-color: #FFFBEB; border: 2px solid #F59E0B; }
 
         .credit-footer {
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             color: var(--text-muted);
         }
 
         .credit-footer strong {
-            color: var(--rio-blue);
+            color: var(--primary-blue);
             font-weight: 700;
         }
     </style>
@@ -300,26 +269,14 @@
 
     <div class="calendar-container">
         <header>
-            <div class="logo-container">
-                <div>
-                    <div class="logo-text-main">PREFEITURA</div>
-                    <div class="logo-text-sub">DO RIO</div>
-                </div>
-                <div class="divider"></div>
-                <div class="logo-cor">
-                    Centro de Operações<br>e Resiliência
-                </div>
-            </div>
-            
             <div class="title-block">
                 <div class="month-title" id="month-label">Julho</div>
                 <div class="year-title" id="year-label">2026</div>
-                <div class="description">Escala de final de semana do T.I noturno do Supervisor Felipe Souza</div>
             </div>
 
             <div class="nav-controls">
                 <button class="btn-nav" id="btn-prev-month">« Ant</button>
-                <button class="btn-nav" id="btn-next-month">Prox »</button>
+                <button class="btn-nav" id="btn-next-month">Próx »</button>
             </div>
         </header>
 
@@ -337,7 +294,7 @@
                     </tr>
                 </thead>
                 <tbody id="calendar-table-body">
-                    </tbody>
+                </tbody>
             </table>
         </div>
 
@@ -347,7 +304,7 @@
                 <div class="legend-item"><div class="l-dot l-today"></div> Hoje</div>
             </div>
             <div class="credit-footer">
-                desenvolvedor BY <strong>felipe Souza</strong>
+                Desenvolvido por <strong>Felipe Souza</strong>
             </div>
         </footer>
     </div>
@@ -358,11 +315,9 @@
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
         
-        // Estado inicial da aplicação (Mês base fixado em Julho de 2026)
         let activeMonth = 6; 
         let activeYear = 2026;
 
-        // Base matemática estável: 3 de Julho de 2026 foi uma Sexta-feira de início de plantão
         function calculateDaysFromAnchor(y, m, d) {
             const anchorDate = Date.UTC(2026, 6, 3);
             const targetDate = Date.UTC(y, m, d);
@@ -388,7 +343,6 @@
             const tableBody = document.getElementById("calendar-table-body");
             tableBody.innerHTML = ""; 
 
-            // Matriz cíclica de revezamento contendo as 5 pessoas principais
             const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
 
             let currentDayNumber = 1;
@@ -404,7 +358,6 @@
                     } else {
                         containsData = true;
                         
-                        // Destaque visual do dia de hoje (Amarelo institucional)
                         if (currentDayNumber === realToday.getDate() && year === realToday.getFullYear() && month === realToday.getMonth()) {
                             cellElement.className = "today-cell";
                         }
@@ -413,9 +366,8 @@
                         let isDutyScheduled = false;
 
                         const dayDifference = calculateDaysFromAnchor(year, month, currentDayNumber);
-                        const positionInCycle = mathematicalMod(dayDifference, 14); // Ciclo completo de 14 dias (7 ativos, 7 inativos)
+                        const positionInCycle = mathematicalMod(dayDifference, 14);
 
-                        // Mapeamento dos dias do Final de Semana Ativo (0 = Sexta, 1 = Sábado, 2 = Domingo)
                         if (positionInCycle === 0 || positionInCycle === 1 || positionInCycle === 2) {
                             isDutyScheduled = true;
                             let calculatedWeekendIndex;
@@ -423,25 +375,22 @@
                             else if (positionInCycle === 1) calculatedWeekendIndex = Math.floor((dayDifference - 1) / 14);
                             else calculatedWeekendIndex = Math.floor((dayDifference - 2) / 14);
 
-                            // Deslocamento de 2 posições por final de semana trabalhado
                             const rotationOffset = mathematicalMod(calculatedWeekendIndex * 2, 5); 
                             const currentWeekendOrder = staffRotationList.slice(rotationOffset).concat(staffRotationList.slice(0, rotationOffset));
 
                             if (positionInCycle === 0) {
-                                activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]); // Sexta
+                                activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]);
                             } else if (positionInCycle === 1) {
-                                activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);               // Sábado (Felipe Fixo)
+                                activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);
                             } else if (positionInCycle === 2) {
-                                activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]); // Domingo
+                                activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]);
                             }
                         }
-                        // Regra de Negócio: Leandro assume fixo na Quinta-feira imediatamente após o plantão (posição 6 do ciclo)
                         else if (positionInCycle === 6) {
                             isDutyScheduled = true;
                             activeWorkersThisDay.push("Leandro");
                         }
 
-                        // Renderização estrutural da célula do dia
                         let cellInnerMarkup = `<div class="date-row">`;
                         if (isDutyScheduled) {
                             cellInnerMarkup += `<div class="duty-day-circle">${currentDayNumber}</div>`;
@@ -465,7 +414,6 @@
             }
         }
 
-        // Eventos dos botões de controle de mês/ano
         document.getElementById("btn-prev-month").onclick = () => {
             activeMonth--;
             if (activeMonth < 0) { 
@@ -484,7 +432,6 @@
             buildCalendarGrid(activeMonth, activeYear);
         };
 
-        // Inicialização primária da tela
         buildCalendarGrid(activeMonth, activeYear);
     </script>
 </body>
