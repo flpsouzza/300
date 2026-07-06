@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plantão Noturno</title>
+    <title>Plantão Noturno - Final de Semana</title>
     <style>
-        /* DESIGN PREMIUM, MINIMALISTA E RESPONSIVO */
+        /* PALETA DE CORES OFICIAL COR-RIO & DESIGN MOBILE-FIRST */
         :root {
-            --primary-blue: #0F172A;   /* Azul escuro ardósia super moderno */
-            --accent-bronze: #B45309;  /* Bronze terroso sofisticado */
-            --bg-body: #F8FAFC;        /* Fundo claro e descansado */
+            --rio-blue: #002D5E;       /* Azul Escuro das imagens enviadas */
+            --rio-light: #004A8D;      /* Azul Claro institucional */
+            --accent-bronze: #8C6239;  /* Bronze sóbrio para o ano */
+            --bg-body: #F4F7FA;        /* Fundo suave e limpo */
             --bg-card: #FFFFFF;
             --text-main: #1E293B;
             --text-muted: #64748B;
@@ -28,32 +29,46 @@
             color: var(--text-main);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
-            padding: 24px;
+            padding: 16px;
         }
 
-        /* Container Principal com cantos bem arredondados e sombra suave */
+        /* Container Principal */
         .calendar-container {
             width: 100%;
             max-width: 1000px;
             background-color: var(--bg-card);
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px;
         }
 
-        /* CABEÇALHO SUPER CLEAN */
+        /* BARRA SUPERIOR DESTAQUE - AZUL COR-RIO */
+        .top-bar-header {
+            background-color: var(--rio-blue);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* CABEÇALHO DO MÊS */
         header {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 40px 24px 24px 24px;
+            padding: 24px;
             background: #FFFFFF;
             gap: 16px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .title-block {
@@ -63,57 +78,60 @@
         }
 
         .month-title {
-            font-size: 46px;
+            font-size: 38px;
             font-weight: 800;
-            color: var(--primary-blue);
+            color: var(--rio-blue);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             line-height: 1;
         }
 
         .year-title {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--accent-bronze);
             font-weight: 700;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             margin-top: 6px;
             text-transform: uppercase;
         }
 
-        /* Controles de Navegação Minimalistas */
+        /* Controles de Navegação Ajustados para Toque no Telemóvel */
         .nav-controls {
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 12px;
+            width: 100%;
+            justify-content: center;
         }
 
         .btn-nav {
             background-color: #FFFFFF;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 18px;
-            font-size: 11px;
+            color: var(--rio-blue);
+            border: 1.5px solid var(--rio-blue);
+            padding: 10px 24px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            border-radius: 20px; /* Botões pílula modernos */
+            border-radius: 25px;
             transition: all 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            flex: 1;
+            max-width: 130px;
+            text-align: center;
         }
 
         .btn-nav:hover {
-            background-color: var(--primary-blue);
+            background-color: var(--rio-blue);
             color: #FFFFFF;
-            border-color: var(--primary-blue);
         }
 
-        /* CONTEÚDO DO CALENDÁRIO */
+        /* ÁREA DO CONTEÚDO */
         .calendar-content {
-            padding: 0 24px 24px 24px;
-            overflow-x: auto;
+            padding: 20px;
         }
 
-        table {
+        /* MODO DESKTOP: TABELA TRADICIONAL */
+        .desktop-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
@@ -121,94 +139,120 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
+            display: table;
         }
 
-        th {
-            background-color: #F8FAFC;
-            color: var(--text-muted);
-            font-size: 11px;
+        .desktop-table th {
+            background-color: var(--rio-blue);
+            color: #FFFFFF;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 14px;
-            border-bottom: 1px solid var(--border-color);
             letter-spacing: 1px;
+            border: none;
         }
 
-        td {
+        .desktop-table td {
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             vertical-align: top;
             padding: 10px;
-            height: 105px;
-            position: relative;
+            height: 110px;
             background-color: #FFFFFF;
         }
 
-        table tr td:last-child {
-            border-right: none;
+        .desktop-table tr td:last-child { border-right: none; }
+        .desktop-table tr:last-child td { border-bottom: none; }
+        .desktop-table .empty-cell { background-color: #F8FAFC; }
+
+        /* MODO MOBILE: VISUALIZAÇÃO EM LISTA VERTICAL (OCULTA POR PADRÃO NO PC) */
+        .mobile-list {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        table tr:last-child td {
-            border-bottom: none;
+        .mobile-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .empty-cell { 
-            background-color: #F8FAFC; 
+        .mobile-card-date {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .today-cell { 
-            background-color: #FFFBEB; /* Amarelo sutil e confortável */
-            border: 2px solid #F59E0B !important; 
+        .mobile-day-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            width: 45px;
         }
 
+        /* Elementos de Estilo dos Dias */
         .date-row {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .date-num {
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 700;
+            font-size: 14px;
             color: #94A3B8;
         }
 
-        /* Indicador circular moderno */
         .duty-day-circle {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--accent-bronze);
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--rio-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent-bronze);
-            font-size: 12px;
-            font-weight: 700;
+            color: var(--rio-light);
+            font-size: 13px;
+            font-weight: 800;
         }
 
-        /* BADGES ARREDONDADOS E CORES PASTÉIS SÓBRIAS */
+        /* BADGES - TAMANHO GRANDE E FONTE NÍTIDA PARA O TELEMÓVEL */
         .badges-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .mobile-list .badges-list {
+            width: auto;
+            min-width: 140px;
+            align-items: flex-end;
         }
 
         .badge {
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 12px; /* Maior para leitura imediata */
+            font-weight: 800;
             color: #FFFFFF;
-            padding: 4px 8px;
+            padding: 6px 12px;
             border-radius: 6px;
             text-transform: uppercase;
             width: 100%;
             text-align: center;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             letter-spacing: 0.5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* Paleta atualizada para tons flat premium */
-        .b-julio { background-color: #E11D48; }
+        /* Cores Marcantes e Vivas das Etiquetas */
+        .b-julio { background-color: #DC2626; }
         .b-carlos { background-color: #D97706; }
         .b-leticia { background-color: #0891B2; }
         .b-gustavo { background-color: #EA580C; }
@@ -216,9 +260,19 @@
         .b-leandro { background-color: #7C3AED; }
         .b-felipe { background-color: #16A34A; }
 
-        /* RODAPÉ LIMPO */
+        /* DESTAQUE DO DIA ATUAL */
+        .today-cell { 
+            background-color: #FFFBEB !important; 
+            border: 2px solid #F59E0B !important; 
+        }
+        .mobile-card.today-card {
+            border: 2px solid #F59E0B;
+            background-color: #FFFBEB;
+        }
+
+        /* RODAPÉ */
         footer {
-            padding: 20px 24px;
+            padding: 20px;
             background-color: #F8FAFC;
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -231,43 +285,47 @@
         .legend-container {
             display: flex;
             gap: 16px;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        .legend-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-        }
-
-        .l-dot { 
-            width: 10px; 
-            height: 10px; 
-            border-radius: 50%; 
-        }
-        
-        .l-active { border: 2px solid var(--accent-bronze); }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .l-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .l-active { border: 2px solid var(--rio-light); }
         .l-today { background-color: #FFFBEB; border: 2px solid #F59E0B; }
 
         .credit-footer {
-            font-size: 11px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: var(--text-muted);
         }
+        .credit-footer strong { color: var(--rio-blue); font-weight: 700; }
 
-        .credit-footer strong {
-            color: var(--primary-blue);
-            font-weight: 700;
+        /* ========================================================
+           MEDIA QUERY: MÁGICA DO DESIGN RESPONSIVO PARA TELEMÓVEL
+           ======================================================== */
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .calendar-container { border-radius: 12px; }
+            .month-title { font-size: 32px; }
+            
+            /* Esconde a tabela quadrada que fica horrível no tlm */
+            .desktop-table { display: none; }
+            
+            /* Ativa a lista vertical linda e fácil de ler */
+            .mobile-list { display: flex; }
+            
+            footer { flex-direction: column; text-align: center; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
     <div class="calendar-container">
+        <div class="top-bar-header">Final de Semana</div>
+        
         <header>
             <div class="title-block">
                 <div class="month-title" id="month-label">Julho</div>
@@ -281,7 +339,7 @@
         </header>
 
         <div class="calendar-content">
-            <table>
+            <table class="desktop-table">
                 <thead>
                     <tr>
                         <th>Dom</th>
@@ -293,14 +351,15 @@
                         <th>Sáb</th>
                     </tr>
                 </thead>
-                <tbody id="calendar-table-body">
-                </tbody>
+                <tbody id="calendar-table-body"></tbody>
             </table>
+
+            <div class="mobile-list" id="calendar-mobile-list"></div>
         </div>
 
         <footer>
             <div class="legend-container">
-                <div class="legend-item"><div class="l-dot l-active"></div> Dia de Trabalho</div>
+                <div class="legend-item"><div class="l-dot l-active"></div> Plantão</div>
                 <div class="legend-item"><div class="l-dot l-today"></div> Hoje</div>
             </div>
             <div class="credit-footer">
@@ -310,10 +369,8 @@
     </div>
 
     <script>
-        const monthNamesList = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-        ];
+        const monthNamesList = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const dayNamesList = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
         
         let activeMonth = 6; 
         let activeYear = 2026;
@@ -324,13 +381,8 @@
             return Math.floor((targetDate - anchorDate) / (1000 * 60 * 60 * 24));
         }
 
-        function mathematicalMod(n, m) { 
-            return ((n % m) + m) % m; 
-        }
-
-        function cleanStringForClass(text) {
-            return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        }
+        function mathematicalMod(n, m) { return ((n % m) + m) % m; }
+        function cleanStringForClass(text) { return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
         function buildCalendarGrid(month, year) {
             const firstDayIndex = new Date(year, month, 1).getDay();
@@ -341,11 +393,14 @@
             document.getElementById("year-label").innerText = year;
             
             const tableBody = document.getElementById("calendar-table-body");
+            const mobileList = document.getElementById("calendar-mobile-list");
+            
             tableBody.innerHTML = ""; 
+            mobileList.innerHTML = "";
 
             const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
-
             let currentDayNumber = 1;
+
             for (let weekRow = 0; weekRow < 6; weekRow++) {
                 let rowElement = document.createElement("tr");
                 let containsData = false;
@@ -357,10 +412,9 @@
                         cellElement.className = "empty-cell";
                     } else {
                         containsData = true;
+                        const isToday = (currentDayNumber === realToday.getDate() && year === realToday.getFullYear() && month === realToday.getMonth());
                         
-                        if (currentDayNumber === realToday.getDate() && year === realToday.getFullYear() && month === realToday.getMonth()) {
-                            cellElement.className = "today-cell";
-                        }
+                        if (isToday) cellElement.className = "today-cell";
 
                         let activeWorkersThisDay = [];
                         let isDutyScheduled = false;
@@ -370,41 +424,46 @@
 
                         if (positionInCycle === 0 || positionInCycle === 1 || positionInCycle === 2) {
                             isDutyScheduled = true;
-                            let calculatedWeekendIndex;
-                            if (positionInCycle === 0) calculatedWeekendIndex = Math.floor(dayDifference / 14);
-                            else if (positionInCycle === 1) calculatedWeekendIndex = Math.floor((dayDifference - 1) / 14);
-                            else calculatedWeekendIndex = Math.floor((dayDifference - 2) / 14);
-
+                            let calculatedWeekendIndex = Math.floor((dayDifference - (positionInCycle === 0 ? 0 : positionInCycle === 1 ? 1 : 2)) / 14);
                             const rotationOffset = mathematicalMod(calculatedWeekendIndex * 2, 5); 
                             const currentWeekendOrder = staffRotationList.slice(rotationOffset).concat(staffRotationList.slice(0, rotationOffset));
 
-                            if (positionInCycle === 0) {
-                                activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]);
-                            } else if (positionInCycle === 1) {
-                                activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);
-                            } else if (positionInCycle === 2) {
-                                activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]);
-                            }
+                            if (positionInCycle === 0) activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]);
+                            else if (positionInCycle === 1) activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);
+                            else if (positionInCycle === 2) activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]);
                         }
                         else if (positionInCycle === 6) {
                             isDutyScheduled = true;
                             activeWorkersThisDay.push("Leandro");
                         }
 
+                        // RENDERIZAÇÃO DESKTOP
                         let cellInnerMarkup = `<div class="date-row">`;
-                        if (isDutyScheduled) {
-                            cellInnerMarkup += `<div class="duty-day-circle">${currentDayNumber}</div>`;
-                        } else {
-                            cellInnerMarkup += `<div class="date-num">${currentDayNumber}</div>`;
-                        }
+                        cellInnerMarkup += isDutyScheduled ? `<div class="duty-day-circle">${currentDayNumber}</div>` : `<div class="date-num">${currentDayNumber}</div>`;
                         cellInnerMarkup += `</div><div class="badges-list">`;
-                        
-                        activeWorkersThisDay.forEach(workerName => {
-                            cellInnerMarkup += `<span class="badge b-${cleanStringForClass(workerName)}">${workerName}</span>`;
-                        });
+                        activeWorkersThisDay.forEach(w => cellInnerMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
                         cellInnerMarkup += `</div>`;
-                        
                         cellElement.innerHTML = cellInnerMarkup;
+
+                        // RENDERIZAÇÃO MOBILE (Apenas dias que possuem plantão cadastrado para poupar espaço)
+                        if (isDutyScheduled) {
+                            let cardElement = document.createElement("div");
+                            cardElement.className = `mobile-card ${isToday ? 'today-card' : ''}`;
+                            
+                            let cardMarkup = `
+                                <div class="mobile-card-date">
+                                    <div class="mobile-day-name">${dayNamesList[dayColumn]}</div>
+                                    <div class="duty-day-circle">${currentDayNumber}</div>
+                                </div>
+                                <div class="badges-list">
+                            `;
+                            activeWorkersThisDay.forEach(w => cardMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
+                            cardMarkup += `</div>`;
+                            
+                            cardElement.innerHTML = cardMarkup;
+                            mobileList.appendChild(cardElement);
+                        }
+
                         currentDayNumber++;
                     }
                     rowElement.appendChild(cellElement);
@@ -415,20 +474,12 @@
         }
 
         document.getElementById("btn-prev-month").onclick = () => {
-            activeMonth--;
-            if (activeMonth < 0) { 
-                activeMonth = 11; 
-                activeYear--; 
-            }
+            activeMonth--; if (activeMonth < 0) { activeMonth = 11; activeYear--; }
             buildCalendarGrid(activeMonth, activeYear);
         };
 
         document.getElementById("btn-next-month").onclick = () => {
-            activeMonth++;
-            if (activeMonth > 11) { 
-                activeMonth = 0; 
-                activeYear++; 
-            }
+            activeMonth++; if (activeMonth > 11) { activeMonth = 0; activeYear++; }
             buildCalendarGrid(activeMonth, activeYear);
         };
 
