@@ -1,0 +1,497 @@
+html_content = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala T.I Noturno - COR RIO</title>
+    <style>
+        /* DESIGN INSTITUCIONAL COR-RIO + TOQUE DE BRONZE SÓBRIO (300)
+           Foco: Alta legibilidade, profissionalismo e responsividade.
+        */
+        :root {
+            --rio-blue: #002D5E;      /* Azul Escuro Oficial da Prefeitura */
+            --rio-light: #004A8D;     /* Azul Claro Complementar */
+            --bronze-accent: #8C6239; /* Bronze Sóbrio (Referência sutil ao tema 300) */
+            --bg-body: #EAEFF3;
+            --bg-card: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #CBD5E1;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container Principal com Proporções de Painel de Gestão */
+        .calendar-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-top: 6px solid var(--rio-blue);
+        }
+
+        /* CABEÇALHO INSTITUCIONAL */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
+            background: linear-gradient(to bottom, #FFFFFF, #F8FAFC);
+            border-bottom: 1px solid #E2E8F0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Logotipo Vetorial Customizado (Prefeitura + COR) */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text-main {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--rio-blue);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .logo-text-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .divider {
+            width: 1px;
+            height: 45px;
+            background-color: #CBD5E1;
+        }
+
+        .logo-cor {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--rio-light);
+            line-height: 1.2;
+        }
+
+        /* Bloco de Título (Mês e Ano Separados) */
+        .title-block {
+            text-align: center;
+        }
+
+        .month-title {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--rio-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        .year-title {
+            font-size: 20px;
+            color: var(--bronze-accent);
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-top: 4px;
+        }
+
+        .description {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Controles de Navegação */
+        .nav-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-nav {
+            background-color: #FFFFFF;
+            color: var(--rio-blue);
+            border: 1px solid var(--rio-blue);
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-nav:hover {
+            background-color: var(--rio-blue);
+            color: #FFFFFF;
+        }
+
+        /* CONTEÚDO DO CALENDÁRIO */
+        .calendar-content {
+            padding: 25px 40px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--rio-blue);
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 12px;
+            border: 1px solid #001A38;
+            letter-spacing: 1px;
+        }
+
+        td {
+            border: 1px solid #E2E8F0;
+            vertical-align: top;
+            padding: 8px;
+            height: 115px;
+            position: relative;
+        }
+
+        .empty-cell { 
+            background-color: #F8FAFC; 
+        }
+
+        .today-cell { 
+            background-color: #FFFBEB; 
+            border: 2px solid var(--bronze-accent) !important; 
+        }
+
+        .date-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+        }
+
+        .date-num {
+            font-weight: 700;
+            font-size: 14px;
+            color: #94A3B8;
+        }
+
+        /* Indicador circular idêntico ao modelo original */
+        .duty-day-circle {
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--rio-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rio-light);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* ETIQUETAS E BADGES DOS PLANTÃO */
+        .badges-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: #FFFFFF;
+            padding: 3px 8px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            width: fit-content;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            border-left: 3px solid rgba(0,0,0,0.2);
+        }
+
+        /* Cores Sóbrias Ajustadas */
+        .b-julio { background-color: #A82020; }
+        .b-carlos { background-color: #D97706; }
+        .b-leticia { background-color: #0891B2; }
+        .b-gustavo { background-color: #C2410C; }
+        .b-tatiane { background-color: #1D4ED8; }
+        .b-leandro { background-color: #6D28D9; }
+        .b-felipe { background-color: #15803D; }
+
+        /* RODAPÉ E CRÉDITOS */
+        footer {
+            padding: 18px 40px;
+            background-color: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .legend-container {
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .legend-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        .l-dot { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+        }
+        
+        .l-active { border: 2px solid var(--rio-light); }
+        .l-today { background-color: #FFFBEB; border: 2px solid var(--bronze-accent); }
+
+        .credit-footer {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .credit-footer strong {
+            color: var(--rio-blue);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <header>
+            <div class="logo-container">
+                <div>
+                    <div class="logo-text-main">PREFEITURA</div>
+                    <div class="logo-text-sub">DO RIO</div>
+                </div>
+                <div class="divider"></div>
+                <div class="logo-cor">
+                    Centro de Operações<br>e Resiliência
+                </div>
+            </div>
+            
+            <div class="title-block">
+                <div class="month-title" id="month-label">Julho</div>
+                <div class="year-title" id="year-label">2026</div>
+                <div class="description">Escala de final de semana do T.I noturno do Supervisor Felipe Souza</div>
+            </div>
+
+            <div class="nav-controls">
+                <button class="btn-nav" id="btn-prev-month">« Ant</button>
+                <button class="btn-nav" id="btn-next-month">Prox »</button>
+            </div>
+        </header>
+
+        <div class="calendar-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dom</th>
+                        <th>Seg</th>
+                        <th>Ter</th>
+                        <th>Qua</th>
+                        <th>Qui</th>
+                        <th>Sex</th>
+                        <th>Sáb</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-table-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <div class="legend-container">
+                <div class="legend-item"><div class="l-dot l-active"></div> Dia de Trabalho</div>
+                <div class="legend-item"><div class="l-dot l-today"></div> Hoje</div>
+            </div>
+            <div class="credit-footer">
+                desenvolvedor BY <strong>felipe Souza</strong>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const monthNamesList = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        
+        // Estado inicial da aplicação (Mês base fixado em Julho de 2026)
+        let activeMonth = 6; 
+        let activeYear = 2026;
+
+        // Base matemática estável: 3 de Julho de 2026 foi uma Sexta-feira de início de plantão
+        function calculateDaysFromAnchor(y, m, d) {
+            const anchorDate = Date.UTC(2026, 6, 3);
+            const targetDate = Date.UTC(y, m, d);
+            return Math.floor((targetDate - anchorDate) / (1000 * 60 * 60 * 24));
+        }
+
+        function mathematicalMod(n, m) { 
+            return ((n % m) + m) % m; 
+        }
+
+        function cleanStringForClass(text) {
+            return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function buildCalendarGrid(month, year) {
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalMonthDays = new Date(year, month + 1, 0).getDate();
+            const realToday = new Date();
+
+            document.getElementById("month-label").innerText = monthNamesList[month];
+            document.getElementById("year-label").innerText = year;
+            
+            const tableBody = document.getElementById("calendar-table-body");
+            tableBody.innerHTML = ""; 
+
+            // Matriz cíclica de revezamento contendo as 5 pessoas principais
+            const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
+
+            let currentDayNumber = 1;
+            for (let weekRow = 0; weekRow < 6; weekRow++) {
+                let rowElement = document.createElement("tr");
+                let containsData = false;
+
+                for (let dayColumn = 0; dayColumn < 7; dayColumn++) {
+                    let cellElement = document.createElement("td");
+                    
+                    if ((weekRow === 0 && dayColumn < firstDayIndex) || currentDayNumber > totalMonthDays) {
+                        cellElement.className = "empty-cell";
+                    } else {
+                        containsData = true;
+                        
+                        // Destaque visual do dia de hoje (Amarelo institucional)
+                        if (currentDayNumber === realToday.getDate() && year === realToday.getFullYear() && month === realToday.getMonth()) {
+                            cellElement.className = "today-cell";
+                        }
+
+                        let activeWorkersThisDay = [];
+                        let isDutyScheduled = false;
+
+                        const dayDifference = calculateDaysFromAnchor(year, month, currentDayNumber);
+                        const positionInCycle = mathematicalMod(dayDifference, 14); // Ciclo completo de 14 dias (7 ativos, 7 inativos)
+
+                        // Mapeamento dos dias do Final de Semana Ativo (0 = Sexta, 1 = Sábado, 2 = Domingo)
+                        if (positionInCycle === 0 || positionInCycle === 1 || positionInCycle === 2) {
+                            isDutyScheduled = true;
+                            let calculatedWeekendIndex;
+                            if (positionInCycle === 0) calculatedWeekendIndex = Math.floor(dayDifference / 14);
+                            else if (positionInCycle === 1) calculatedWeekendIndex = Math.floor((dayDifference - 1) / 14);
+                            else calculatedWeekendIndex = Math.floor((dayDifference - 2) / 14);
+
+                            // Deslocamento de 2 posições por final de semana trabalhado
+                            const rotationOffset = mathematicalMod(calculatedWeekendIndex * 2, 5); 
+                            const currentWeekendOrder = staffRotationList.slice(rotationOffset).concat(staffRotationList.slice(0, rotationOffset));
+
+                            if (positionInCycle === 0) {
+                                activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]); // Sexta
+                            } else if (positionInCycle === 1) {
+                                activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);               // Sábado (Felipe Fixo)
+                            } else if (positionInCycle === 2) {
+                                activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]); // Domingo
+                            }
+                        }
+                        // Regra de Negócio: Leandro assume fixo na Quinta-feira imediatamente após o plantão (posição 6 do ciclo)
+                        else if (positionInCycle === 6) {
+                            isDutyScheduled = true;
+                            activeWorkersThisDay.push("Leandro");
+                        }
+
+                        // Renderização estrutural da célula do dia
+                        let cellInnerMarkup = `<div class="date-row">`;
+                        if (isDutyScheduled) {
+                            cellInnerMarkup += `<div class="duty-day-circle">${currentDayNumber}</div>`;
+                        } else {
+                            cellInnerMarkup += `<div class="date-num">${currentDayNumber}</div>`;
+                        }
+                        cellInnerMarkup += `</div><div class="badges-list">`;
+                        
+                        activeWorkersThisDay.forEach(workerName => {
+                            cellInnerMarkup += `<span class="badge b-${cleanStringForClass(workerName)}">${workerName}</span>`;
+                        });
+                        cellInnerMarkup += `</div>`;
+                        
+                        cellElement.innerHTML = cellInnerMarkup;
+                        currentDayNumber++;
+                    }
+                    rowElement.appendChild(cellElement);
+                }
+                if (containsData) tableBody.appendChild(rowElement);
+                if (currentDayNumber > totalMonthDays) break;
+            }
+        }
+
+        // Eventos dos botões de controle de mês/ano
+        document.getElementById("btn-prev-month").onclick = () => {
+            activeMonth--;
+            if (activeMonth < 0) { 
+                activeMonth = 11; 
+                activeYear--; 
+            }
+            buildCalendarGrid(activeMonth, activeYear);
+        };
+
+        document.getElementById("btn-next-month").onclick = () => {
+            activeMonth++;
+            if (activeMonth > 11) { 
+                activeMonth = 0; 
+                activeYear++; 
+            }
+            buildCalendarGrid(activeMonth, activeYear);
+        };
+
+        // Inicialização primária da tela
+        buildCalendarGrid(activeMonth, activeYear);
+    </script>
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as file:
+    file.write(html_content)
+
+print("File generated successfully: index.html")
