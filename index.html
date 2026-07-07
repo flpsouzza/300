@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plantão Noturno - Final de Semana</title>
     <style>
-        /* PALETA DE CORES OFICIAL COR-RIO & DESIGN MOBILE-FIRST */
+        /* DESIGN RESPONSIVO AVANÇADO - IDENTIDADE COR-RIO */
         :root {
-            --rio-blue: #002D5E;       /* Azul Escuro das imagens enviadas */
-            --rio-light: #004A8D;      /* Azul Claro institucional */
-            --accent-bronze: #8C6239;  /* Bronze sóbrio para o ano */
-            --bg-body: #F4F7FA;        /* Fundo suave e limpo */
+            --rio-blue: #002D5E;
+            --rio-light: #004A8D;
+            --accent-bronze: #8C6239;
+            --bg-body: #F4F7FA;
             --bg-card: #FFFFFF;
             --text-main: #1E293B;
             --text-muted: #64748B;
@@ -34,7 +34,6 @@
             padding: 16px;
         }
 
-        /* Container Principal */
         .calendar-container {
             width: 100%;
             max-width: 1000px;
@@ -47,7 +46,6 @@
             margin-bottom: 20px;
         }
 
-        /* BARRA SUPERIOR DESTAQUE - AZUL COR-RIO */
         .top-bar-header {
             background-color: var(--rio-blue);
             color: #FFFFFF;
@@ -59,79 +57,87 @@
             letter-spacing: 2px;
         }
 
-        /* CABEÇALHO DO MÊS */
         header {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 24px;
+            padding: 20px;
             background: #FFFFFF;
             gap: 16px;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .title-block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .month-title {
-            font-size: 38px;
+        .title-block .month-title {
+            font-size: 36px;
             font-weight: 800;
             color: var(--rio-blue);
             text-transform: uppercase;
             letter-spacing: 2px;
-            line-height: 1;
         }
 
-        .year-title {
+        .title-block .year-title {
             font-size: 15px;
             color: var(--accent-bronze);
             font-weight: 700;
             letter-spacing: 6px;
-            margin-top: 6px;
+            margin-top: 4px;
             text-transform: uppercase;
         }
 
-        /* Controles de Navegação Ajustados para Toque no Telemóvel */
-        .nav-controls {
+        /* BARRA DE FERRAMENTAS REORGANIZADA (BOTÕES E PESQUISAS) */
+        .toolbar {
             display: flex;
+            flex-wrap: wrap;
             gap: 12px;
             width: 100%;
             justify-content: center;
+            align-items: center;
+            background: #F8FAFC;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .btn-nav {
+        .nav-controls, .view-controls, .search-control, .jump-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toolbar select, .toolbar input {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            color: var(--text-main);
+            background: #FFFFFF;
+        }
+
+        .btn-action {
             background-color: #FFFFFF;
             color: var(--rio-blue);
             border: 1.5px solid var(--rio-blue);
-            padding: 10px 24px;
-            font-size: 13px;
+            padding: 8px 16px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            border-radius: 25px;
+            border-radius: 20px;
             transition: all 0.2s ease;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            flex: 1;
-            max-width: 130px;
-            text-align: center;
         }
 
-        .btn-nav:hover {
+        .btn-action:hover, .btn-action.active {
             background-color: var(--rio-blue);
             color: #FFFFFF;
         }
 
-        /* ÁREA DO CONTEÚDO */
+        /* CONTEÚDO DO CALENDÁRIO */
         .calendar-content {
-            padding: 20px;
+            padding: 12px;
         }
 
-        /* MODO DESKTOP: TABELA TRADICIONAL */
-        .desktop-table {
+        .calendar-grid-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
@@ -139,119 +145,120 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            display: table;
         }
 
-        .desktop-table th {
+        .calendar-grid-table th {
             background-color: var(--rio-blue);
             color: #FFFFFF;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 14px;
-            letter-spacing: 1px;
-            border: none;
+            padding: 10px 4px;
+            letter-spacing: 0.5px;
+            text-align: center;
         }
 
-        .desktop-table td {
+        .calendar-grid-table td {
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             vertical-align: top;
-            padding: 10px;
-            height: 110px;
+            padding: 6px 4px;
+            height: 95px;
             background-color: #FFFFFF;
         }
 
-        .desktop-table tr td:last-child { border-right: none; }
-        .desktop-table tr:last-child td { border-bottom: none; }
-        .desktop-table .empty-cell { background-color: #F8FAFC; }
+        .calendar-grid-table tr td:last-child { border-right: none; }
+        .calendar-grid-table tr:last-child td { border-bottom: none; }
+        .calendar-grid-table .empty-cell { background-color: #F8FAFC; }
 
-        /* MODO MOBILE: VISUALIZAÇÃO EM LISTA VERTICAL (OCULTA POR PADRÃO NO PC) */
-        .mobile-list {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .mobile-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .mobile-card-date {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .mobile-day-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            width: 45px;
-        }
-
-        /* Elementos de Estilo dos Dias */
         .date-row {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+            padding-right: 2px;
         }
 
         .date-num {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
             color: #94A3B8;
         }
 
         .duty-day-circle {
-            width: 26px;
-            height: 26px;
+            width: 22px;
+            height: 22px;
             border: 2px solid var(--rio-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--rio-light);
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 800;
         }
 
-        /* BADGES - TAMANHO GRANDE E FONTE NÍTIDA PARA O TELEMÓVEL */
+        /* LISTA VERTICAL ALTERNATIVA */
+        .mobile-list-view {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            padding: 8px;
+        }
+
+        .mobile-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-card-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-day-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            width: 40px;
+        }
+
+        /* BADGES RESPONSIVOS */
         .badges-list {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
             width: 100%;
         }
 
-        .mobile-list .badges-list {
+        .mobile-list-view .badges-list {
             width: auto;
-            min-width: 140px;
+            min-width: 130px;
             align-items: flex-end;
         }
 
         .badge {
-            font-size: 12px; /* Maior para leitura imediata */
+            font-size: 10px;
             font-weight: 800;
             color: #FFFFFF;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 3px 4px;
+            border-radius: 4px;
             text-transform: uppercase;
             width: 100%;
             text-align: center;
-            letter-spacing: 0.5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* Cores Marcantes e Vivas das Etiquetas */
+        /* Cores das Etiquetas */
         .b-julio { background-color: #DC2626; }
         .b-carlos { background-color: #D97706; }
         .b-leticia { background-color: #0891B2; }
@@ -260,19 +267,45 @@
         .b-leandro { background-color: #7C3AED; }
         .b-felipe { background-color: #16A34A; }
 
-        /* DESTAQUE DO DIA ATUAL */
-        .today-cell { 
-            background-color: #FFFBEB !important; 
-            border: 2px solid #F59E0B !important; 
+        /* DESTAQUE HOJE */
+        .today-cell { background-color: #FFFBEB !important; border: 2px solid #F59E0B !important; }
+        .today-card { border: 2px solid #F59E0B !important; background-color: #FFFBEB !important; }
+
+        /* MODAL DE PESQUISA (BALÃO POPUP) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
         }
-        .mobile-card.today-card {
-            border: 2px solid #F59E0B;
-            background-color: #FFFBEB;
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: scaleUp 0.2s ease-out;
         }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-card h3 { color: var(--rio-blue); margin-bottom: 12px; font-size: 18px; text-transform: uppercase;}
+        .modal-result-box { margin: 16px 0; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+        .modal-card .badge { font-size: 13px; padding: 6px 16px; width: auto; min-width: 150px; }
 
         /* RODAPÉ */
         footer {
-            padding: 20px;
+            padding: 16px 20px;
             background-color: #F8FAFC;
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -282,42 +315,24 @@
             gap: 15px;
         }
 
-        .legend-container {
-            display: flex;
-            gap: 16px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .legend-item { display: flex; align-items: center; gap: 6px; }
-        .l-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .legend-container { display: flex; gap: 14px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .legend-item { display: flex; align-items: center; gap: 4px; }
+        .l-dot { width: 10px; height: 10px; border-radius: 50%; }
         .l-active { border: 2px solid var(--rio-light); }
         .l-today { background-color: #FFFBEB; border: 2px solid #F59E0B; }
+        .credit-footer { font-size: 11px; text-transform: uppercase; color: var(--text-muted); }
+        .credit-footer strong { color: var(--rio-blue); }
 
-        .credit-footer {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        .credit-footer strong { color: var(--rio-blue); font-weight: 700; }
-
-        /* ========================================================
-           MEDIA QUERY: MÁGICA DO DESIGN RESPONSIVO PARA TELEMÓVEL
-           ======================================================== */
-        @media (max-width: 768px) {
-            body { padding: 8px; }
+        /* AJUSTES CELULAR */
+        @media (max-width: 650px) {
+            body { padding: 4px; }
             .calendar-container { border-radius: 12px; }
-            .month-title { font-size: 32px; }
-            
-            /* Esconde a tabela quadrada que fica horrível no tlm */
-            .desktop-table { display: none; }
-            
-            /* Ativa a lista vertical linda e fácil de ler */
-            .mobile-list { display: flex; }
-            
-            footer { flex-direction: column; text-align: center; gap: 12px; }
+            .toolbar { padding: 12px 10px; gap: 12px; flex-direction: column; }
+            .nav-controls, .view-controls, .search-control, .jump-control { width: 100%; justify-content: center; }
+            .calendar-grid-table td { height: 75px; padding: 4px 2px; }
+            .badge { font-size: 8.5px; padding: 2px 1px; border-radius: 3px; }
+            .duty-day-circle { width: 18px; height: 18px; font-size: 9px; }
+            footer { flex-direction: column; gap: 10px; text-align: center; }
         }
     </style>
 </head>
@@ -331,15 +346,47 @@
                 <div class="month-title" id="month-label">Julho</div>
                 <div class="year-title" id="year-label">2026</div>
             </div>
-
-            <div class="nav-controls">
-                <button class="btn-nav" id="btn-prev-month">« Ant</button>
-                <button class="btn-nav" id="btn-next-month">Próx »</button>
-            </div>
         </header>
 
+        <div class="toolbar">
+            <div class="nav-controls">
+                <button class="btn-action" id="btn-prev-month">« Ant</button>
+                <button class="btn-action" id="btn-next-month">Próx »</button>
+            </div>
+            
+            <div class="view-controls">
+                <button class="btn-action active" id="view-grid-btn">Calendário</button>
+                <button class="btn-action" id="view-list-btn">Lista</button>
+            </div>
+
+            <div class="jump-control">
+                <select id="jump-month-select">
+                    <option value="0">Janeiro</option>
+                    <option value="1">Fevereiro</option>
+                    <option value="2">Março</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Maio</option>
+                    <option value="5">Junho</option>
+                    <option value="6" selected>Julho</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Setembro</option>
+                    <option value="9">Outubro</option>
+                    <option value="10">Novembro</option>
+                    <option value="11">Dezembro</option>
+                </select>
+                <select id="jump-year-select">
+                    </select>
+                <button class="btn-action" id="jump-submit-btn">Ir</button>
+            </div>
+
+            <div class="search-control">
+                <input type="date" id="search-date-input">
+                <button class="btn-action" id="search-submit-btn">Buscar</button>
+            </div>
+        </div>
+
         <div class="calendar-content">
-            <table class="desktop-table">
+            <table class="calendar-grid-table" id="main-grid-view">
                 <thead>
                     <tr>
                         <th>Dom</th>
@@ -354,7 +401,7 @@
                 <tbody id="calendar-table-body"></tbody>
             </table>
 
-            <div class="mobile-list" id="calendar-mobile-list"></div>
+            <div class="mobile-list-view" id="main-list-view"></div>
         </div>
 
         <footer>
@@ -362,18 +409,35 @@
                 <div class="legend-item"><div class="l-dot l-active"></div> Plantão</div>
                 <div class="legend-item"><div class="l-dot l-today"></div> Hoje</div>
             </div>
-            <div class="credit-footer">
-                Desenvolvido por <strong>Felipe Souza</strong>
-            </div>
+            <div class="credit-footer">Desenvolvido por <strong>Felipe Souza</strong></div>
         </footer>
+    </div>
+
+    <div class="modal-overlay" id="search-modal">
+        <div class="modal-card">
+            <h3 id="modal-date-title">Data</h3>
+            <div class="modal-result-box" id="modal-results"></div>
+            <button class="btn-action" style="margin-top: 10px;" id="modal-close-btn">Fechar</button>
+        </div>
     </div>
 
     <script>
         const monthNamesList = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         const dayNamesList = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+        const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
         
         let activeMonth = 6; 
         let activeYear = 2026;
+        let currentViewMode = "grid";
+
+        // Preenche o seletor de anos dinamicamente de 2026 até 2035
+        const yearSelect = document.getElementById("jump-year-select");
+        for (let y = 2026; y <= 2035; y++) {
+            let opt = document.createElement("option");
+            opt.value = y;
+            opt.innerText = y;
+            yearSelect.appendChild(opt);
+        }
 
         function calculateDaysFromAnchor(y, m, d) {
             const anchorDate = Date.UTC(2026, 6, 3);
@@ -384,21 +448,49 @@
         function mathematicalMod(n, m) { return ((n % m) + m) % m; }
         function cleanStringForClass(text) { return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
-        function buildCalendarGrid(month, year) {
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const totalMonthDays = new Date(year, month + 1, 0).getDate();
+        function getWorkersForDate(year, month, day) {
+            let activeWorkers = [];
+            let isDuty = false;
+
+            const dayDifference = calculateDaysFromAnchor(year, month, day);
+            const positionInCycle = mathematicalMod(dayDifference, 14);
+
+            if (positionInCycle === 0 || positionInCycle === 1 || positionInCycle === 2) {
+                isDuty = true;
+                let calculatedWeekendIndex = Math.floor((dayDifference - (positionInCycle === 0 ? 0 : positionInCycle === 1 ? 1 : 2)) / 14);
+                const rotationOffset = mathematicalMod(calculatedWeekendIndex * 2, 5); 
+                const currentWeekendOrder = staffRotationList.slice(rotationOffset).concat(staffRotationList.slice(0, rotationOffset));
+
+                if (positionInCycle === 0) activeWorkers.push(currentWeekendOrder[0], currentWeekendOrder[1]);
+                else if (positionInCycle === 1) activeWorkers.push("Felipe", currentWeekendOrder[2]);
+                else if (positionInCycle === 2) activeWorkers.push(currentWeekendOrder[3], currentWeekendOrder[4]);
+            }
+            else if (positionInCycle === 6) {
+                isDuty = true;
+                activeWorkers.push("Leandro");
+            }
+
+            return { isDuty, activeWorkers };
+        }
+
+        function buildCalendar() {
+            const firstDayIndex = new Date(activeYear, activeMonth, 1).getDay();
+            const totalMonthDays = new Date(activeYear, activeMonth + 1, 0).getDate();
             const realToday = new Date();
 
-            document.getElementById("month-label").innerText = monthNamesList[month];
-            document.getElementById("year-label").innerText = year;
+            document.getElementById("month-label").innerText = monthNamesList[activeMonth];
+            document.getElementById("year-label").innerText = activeYear;
+            
+            // Sincroniza os selects de salto rápido com o mês/ano ativo atual
+            document.getElementById("jump-month-select").value = activeMonth;
+            document.getElementById("jump-year-select").value = activeYear;
             
             const tableBody = document.getElementById("calendar-table-body");
-            const mobileList = document.getElementById("calendar-mobile-list");
+            const listView = document.getElementById("main-list-view");
             
             tableBody.innerHTML = ""; 
-            mobileList.innerHTML = "";
+            listView.innerHTML = "";
 
-            const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
             let currentDayNumber = 1;
 
             for (let weekRow = 0; weekRow < 6; weekRow++) {
@@ -412,44 +504,21 @@
                         cellElement.className = "empty-cell";
                     } else {
                         containsData = true;
-                        const isToday = (currentDayNumber === realToday.getDate() && year === realToday.getFullYear() && month === realToday.getMonth());
-                        
+                        const isToday = (currentDayNumber === realToday.getDate() && activeYear === realToday.getFullYear() && activeMonth === realToday.getMonth());
                         if (isToday) cellElement.className = "today-cell";
 
-                        let activeWorkersThisDay = [];
-                        let isDutyScheduled = false;
+                        const { isDuty, activeWorkers } = getWorkersForDate(activeYear, activeMonth, currentDayNumber);
 
-                        const dayDifference = calculateDaysFromAnchor(year, month, currentDayNumber);
-                        const positionInCycle = mathematicalMod(dayDifference, 14);
-
-                        if (positionInCycle === 0 || positionInCycle === 1 || positionInCycle === 2) {
-                            isDutyScheduled = true;
-                            let calculatedWeekendIndex = Math.floor((dayDifference - (positionInCycle === 0 ? 0 : positionInCycle === 1 ? 1 : 2)) / 14);
-                            const rotationOffset = mathematicalMod(calculatedWeekendIndex * 2, 5); 
-                            const currentWeekendOrder = staffRotationList.slice(rotationOffset).concat(staffRotationList.slice(0, rotationOffset));
-
-                            if (positionInCycle === 0) activeWorkersThisDay.push(currentWeekendOrder[0], currentWeekendOrder[1]);
-                            else if (positionInCycle === 1) activeWorkersThisDay.push("Felipe", currentWeekendOrder[2]);
-                            else if (positionInCycle === 2) activeWorkersThisDay.push(currentWeekendOrder[3], currentWeekendOrder[4]);
-                        }
-                        else if (positionInCycle === 6) {
-                            isDutyScheduled = true;
-                            activeWorkersThisDay.push("Leandro");
-                        }
-
-                        // RENDERIZAÇÃO DESKTOP
                         let cellInnerMarkup = `<div class="date-row">`;
-                        cellInnerMarkup += isDutyScheduled ? `<div class="duty-day-circle">${currentDayNumber}</div>` : `<div class="date-num">${currentDayNumber}</div>`;
+                        cellInnerMarkup += isDuty ? `<div class="duty-day-circle">${currentDayNumber}</div>` : `<div class="date-num">${currentDayNumber}</div>`;
                         cellInnerMarkup += `</div><div class="badges-list">`;
-                        activeWorkersThisDay.forEach(w => cellInnerMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
+                        activeWorkers.forEach(w => cellInnerMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
                         cellInnerMarkup += `</div>`;
                         cellElement.innerHTML = cellInnerMarkup;
 
-                        // RENDERIZAÇÃO MOBILE (Apenas dias que possuem plantão cadastrado para poupar espaço)
-                        if (isDutyScheduled) {
+                        if (isDuty) {
                             let cardElement = document.createElement("div");
                             cardElement.className = `mobile-card ${isToday ? 'today-card' : ''}`;
-                            
                             let cardMarkup = `
                                 <div class="mobile-card-date">
                                     <div class="mobile-day-name">${dayNamesList[dayColumn]}</div>
@@ -457,11 +526,10 @@
                                 </div>
                                 <div class="badges-list">
                             `;
-                            activeWorkersThisDay.forEach(w => cardMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
+                            activeWorkers.forEach(w => cardMarkup += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`);
                             cardMarkup += `</div>`;
-                            
                             cardElement.innerHTML = cardMarkup;
-                            mobileList.appendChild(cardElement);
+                            listView.appendChild(cardElement);
                         }
 
                         currentDayNumber++;
@@ -473,17 +541,71 @@
             }
         }
 
+        function updateViewToggle() {
+            if (currentViewMode === "grid") {
+                document.getElementById("main-grid-view").style.display = "table";
+                document.getElementById("main-list-view").style.display = "none";
+                document.getElementById("view-grid-btn").classList.add("active");
+                document.getElementById("view-list-btn").classList.remove("active");
+            } else {
+                document.getElementById("main-grid-view").style.display = "none";
+                document.getElementById("main-list-view").style.display = "flex";
+                document.getElementById("view-grid-btn").classList.remove("active");
+                document.getElementById("view-list-btn").classList.add("active");
+            }
+        }
+
+        document.getElementById("view-grid-btn").onclick = () => { currentViewMode = "grid"; updateViewToggle(); };
+        document.getElementById("view-list-btn").onclick = () => { currentViewMode = "list"; updateViewToggle(); };
+
         document.getElementById("btn-prev-month").onclick = () => {
             activeMonth--; if (activeMonth < 0) { activeMonth = 11; activeYear--; }
-            buildCalendarGrid(activeMonth, activeYear);
+            buildCalendar();
         };
-
         document.getElementById("btn-next-month").onclick = () => {
             activeMonth++; if (activeMonth > 11) { activeMonth = 0; activeYear++; }
-            buildCalendarGrid(activeMonth, activeYear);
+            buildCalendar();
         };
 
-        buildCalendarGrid(activeMonth, activeYear);
+        // LÓGICA DO BOTÃO "IR" (SALTO RÁPIDO PARA MÊS/ANO)
+        document.getElementById("jump-submit-btn").onclick = () => {
+            activeMonth = parseInt(document.getElementById("jump-month-select").value);
+            activeYear = parseInt(document.getElementById("jump-year-select").value);
+            buildCalendar();
+        };
+
+        // LÓGICA DE PESQUISA POR DATA INDIVIDUAL
+        document.getElementById("search-submit-btn").onclick = () => {
+            const dateValue = document.getElementById("search-date-input").value;
+            if (!dateValue) return alert("Por favor, selecione uma data válida!");
+
+            const parts = dateValue.split("-");
+            const targetY = parseInt(parts[0]);
+            const targetM = parseInt(parts[1]) - 1;
+            const targetD = parseInt(parts[2]);
+
+            const { isDuty, activeWorkers } = getWorkersForDate(targetY, targetM, targetD);
+            
+            document.getElementById("modal-date-title").innerText = `${targetD}/${targetM + 1}/${targetY}`;
+            const resultsBox = document.getElementById("modal-results");
+            resultsBox.innerHTML = "";
+
+            if (!isDuty) {
+                resultsBox.innerHTML = "<p style='color: #64748B; font-weight: 600;'>Nenhum plantão cadastrado neste dia.</p>";
+            } else {
+                activeWorkers.forEach(w => {
+                    resultsBox.innerHTML += `<span class="badge b-${cleanStringForClass(w)}">${w}</span>`;
+                });
+            }
+
+            document.getElementById("search-modal").style.display = "flex";
+        };
+
+        document.getElementById("modal-close-btn").onclick = () => {
+            document.getElementById("search-modal").style.display = "none";
+        };
+
+        buildCalendar();
     </script>
 </body>
 </html>
