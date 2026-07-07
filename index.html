@@ -6,7 +6,7 @@
     <title>Plantão Noturno - Final de Semana</title>
     <link rel="manifest" href="data:application/json,{}">
     <style>
-        /* ... (mesmo CSS anterior, com pequena adição para o botão pulsar) ... */
+        /* ====== Mesmo CSS anterior, com uma adição ====== */
         :root {
             --rio-blue: #002D5E;
             --rio-light: #004A8D;
@@ -80,7 +80,6 @@
             margin-top: 4px;
             text-transform: uppercase;
         }
-        /* Botão de fixar (home) integrado ao título */
         .btn-fix-home {
             position: absolute;
             top: 0;
@@ -107,7 +106,6 @@
         .btn-fix-home .icon {
             font-size: 18px;
         }
-        /* Animação de pulso para chamar atenção */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -115,6 +113,26 @@
         }
         .btn-fix-home.pulse .icon {
             animation: pulse 1.5s ease-in-out infinite;
+        }
+        /* Botão especial para abrir no navegador (visível apenas em WebView) */
+        .open-browser-btn {
+            background: #F59E0B;
+            color: #FFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: none; /* escondido por padrão */
+            margin: 8px auto;
+            width: fit-content;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .open-browser-btn:hover {
+            transform: scale(1.02);
+            background: #D97706;
         }
         .toolbar {
             display: flex;
@@ -359,6 +377,26 @@
             color: #FFF;
             border-color: var(--rio-blue);
         }
+        /* Destaque para o botão de abrir no navegador */
+        .open-browser-btn {
+            background: #F59E0B;
+            color: #FFF;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+            margin: 8px auto;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+        .open-browser-btn:hover {
+            transform: scale(1.02);
+            background: #D97706;
+        }
         @media (max-width: 650px) {
             body { padding: 4px; }
             .calendar-container { border-radius: 12px; }
@@ -381,12 +419,14 @@
             <div class="title-block">
                 <div class="month-title" id="month-label">Julho</div>
                 <div class="year-title" id="year-label">2026</div>
-                <!-- Botão de fixar (home) integrado ao título -->
                 <button class="btn-fix-home pulse" id="btn-add-to-home" aria-label="Adicionar à tela inicial">
                     <span class="icon">🏠</span> <span class="label">Fixar</span>
                 </button>
             </div>
+            <!-- Botão especial: Abrir no navegador (aparece apenas em WebView) -->
+            <button class="open-browser-btn" id="open-browser-btn">🌐 Abrir no navegador</button>
         </header>
+
         <div class="toolbar">
             <div class="nav-controls">
                 <button class="btn-action" id="btn-prev-month">« Ant</button>
@@ -411,6 +451,7 @@
                 <button class="btn-action" id="search-submit-btn">Buscar</button>
             </div>
         </div>
+
         <div class="calendar-content">
             <table class="calendar-grid-table" id="main-grid-view">
                 <thead><tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th></tr></thead>
@@ -418,6 +459,7 @@
             </table>
             <div class="mobile-list-view" id="main-list-view"></div>
         </div>
+
         <footer>
             <div class="legend-container">
                 <div class="legend-item"><div class="l-dot l-active"></div> Plantão</div>
@@ -439,7 +481,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE INSTALAÇÃO (ADICIONAR À HOME) -->
+    <!-- MODAL DE INSTALAÇÃO -->
     <div class="modal-overlay" id="install-modal">
         <div class="modal-card">
             <h3>🏠 Fixar na Tela Inicial</h3>
@@ -586,6 +628,34 @@
         });
         buildCalendar();
 
+        // ========== DETECÇÃO DE WEBVIEW E BOTÃO "ABRIR NO NAVEGADOR" ==========
+        (function() {
+            const isWebView = !!(navigator.userAgent.match(/wv/i) || navigator.userAgent.match(/WebView/i) || 
+                                 (window.navigator && window.navigator.standalone === false && 
+                                  (window.navigator.userAgent.indexOf('Safari') === -1 && 
+                                   window.navigator.userAgent.indexOf('Chrome') === -1 && 
+                                   window.navigator.userAgent.indexOf('Firefox') === -1)));
+
+            const openBtn = document.getElementById("open-browser-btn");
+            if (isWebView) {
+                openBtn.style.display = "block";
+                openBtn.addEventListener("click", function() {
+                    // Tenta abrir no navegador externo
+                    const url = window.location.href;
+                    // No Android, tenta usar intent
+                    if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+                        window.location.href = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+                    } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+                        // No iOS, não há intent, então apenas instruímos
+                        alert("Toque no ícone de compartilhar e escolha 'Abrir no Safari'.");
+                    } else {
+                        // Fallback: tenta abrir com window.open (pode não funcionar em alguns navegadores)
+                        window.open(url, '_system');
+                    }
+                });
+            }
+        })();
+
         // ========== FUNCIONALIDADE DE FIXAR (HOME) ==========
         (function() {
             const btnFix = document.getElementById("btn-add-to-home");
@@ -705,9 +775,8 @@
             copyBtn.addEventListener('click', () => {
                 const url = window.location.href;
                 navigator.clipboard.writeText(url).then(() => {
-                    alert('Link copiado! Cole no Safari para seguir os passos.');
+                    alert('Link copiado! Cole no navegador desejado.');
                 }).catch(() => {
-                    // fallback
                     const textarea = document.createElement('textarea');
                     textarea.value = url;
                     document.body.appendChild(textarea);
