@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Plantão Noturno - Final de Semana</title>
+    <link rel="manifest" href="data:application/json,{}">
     <style>
         /* DESIGN RESPONSIVO AVANÇADO - IDENTIDADE COR-RIO */
         :root {
@@ -44,6 +45,7 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .top-bar-header {
@@ -66,6 +68,12 @@
             background: #FFFFFF;
             gap: 16px;
             border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .title-block {
+            position: relative;
+            width: 100%;
         }
 
         .title-block .month-title {
@@ -85,7 +93,35 @@
             text-transform: uppercase;
         }
 
-        /* BARRA DE FERRAMENTAS REORGANIZADA (BOTÕES E PESQUISAS) */
+        /* Botão de fixar (home) integrado ao título */
+        .btn-fix-home {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--rio-blue);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 30px;
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .btn-fix-home:hover {
+            background: rgba(0,45,94,0.08);
+            transform: scale(1.05);
+        }
+        .btn-fix-home .icon {
+            font-size: 18px;
+        }
+
+        /* BARRA DE FERRAMENTAS (sem o botão home, que agora está no header) */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -125,6 +161,7 @@
             border-radius: 20px;
             transition: all 0.2s ease;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .btn-action:hover, .btn-action.active {
@@ -303,6 +340,20 @@
         .modal-result-box { margin: 16px 0; display: flex; flex-direction: column; gap: 6px; align-items: center; }
         .modal-card .badge { font-size: 13px; padding: 6px 16px; width: auto; min-width: 150px; }
 
+        .install-step {
+            text-align: left;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .install-step strong { color: var(--rio-blue); }
+        .install-step .icon {
+            font-size: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
         /* RODAPÉ */
         footer {
             padding: 16px 20px;
@@ -318,10 +369,29 @@
         .legend-container { display: flex; gap: 14px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .legend-item { display: flex; align-items: center; gap: 4px; }
         .l-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .l-active { border: 2px solid var(--rio-light); }
+        .l-active { border: 2px solid var(--rio-light); background: transparent; }
         .l-today { background-color: #FFFBEB; border: 2px solid #F59E0B; }
         .credit-footer { font-size: 11px; text-transform: uppercase; color: var(--text-muted); }
         .credit-footer strong { color: var(--rio-blue); }
+
+        /* Link de fixar no rodapé (opcional) */
+        .footer-fix-link {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .footer-fix-link:hover {
+            background: var(--rio-blue);
+            color: #FFF;
+            border-color: var(--rio-blue);
+        }
 
         /* AJUSTES CELULAR */
         @media (max-width: 650px) {
@@ -333,6 +403,9 @@
             .badge { font-size: 8.5px; padding: 2px 1px; border-radius: 3px; }
             .duty-day-circle { width: 18px; height: 18px; font-size: 9px; }
             footer { flex-direction: column; gap: 10px; text-align: center; }
+            .btn-action { font-size: 11px; padding: 6px 12px; }
+            .btn-fix-home { font-size: 12px; }
+            .btn-fix-home .icon { font-size: 16px; }
         }
     </style>
 </head>
@@ -345,6 +418,10 @@
             <div class="title-block">
                 <div class="month-title" id="month-label">Julho</div>
                 <div class="year-title" id="year-label">2026</div>
+                <!-- Botão de fixar (home) integrado ao título -->
+                <button class="btn-fix-home" id="btn-add-to-home" aria-label="Adicionar à tela inicial">
+                    <span class="icon">🏠</span> <span class="label">Fixar</span>
+                </button>
             </div>
         </header>
 
@@ -409,10 +486,14 @@
                 <div class="legend-item"><div class="l-dot l-active"></div> Plantão</div>
                 <div class="legend-item"><div class="l-dot l-today"></div> Hoje</div>
             </div>
-            <div class="credit-footer">Desenvolvido por <strong>Felipe Souza</strong></div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <a href="#" class="footer-fix-link" id="footer-fix-link">🏠 Fixar na Home</a>
+                <span class="credit-footer">Desenvolvido por <strong>Felipe Souza</strong></span>
+            </div>
         </footer>
     </div>
 
+    <!-- MODAL DE PESQUISA -->
     <div class="modal-overlay" id="search-modal">
         <div class="modal-card">
             <h3 id="modal-date-title">Data</h3>
@@ -421,7 +502,17 @@
         </div>
     </div>
 
+    <!-- MODAL DE INSTALAÇÃO (ADICIONAR À HOME) -->
+    <div class="modal-overlay" id="install-modal">
+        <div class="modal-card">
+            <h3>🏠 Fixar na Tela Inicial</h3>
+            <div id="install-instructions" style="text-align: left; margin-top: 12px;"></div>
+            <button class="btn-action" style="margin-top: 16px;" id="install-modal-close">Entendi</button>
+        </div>
+    </div>
+
     <script>
+        // ========== LÓGICA DO CALENDÁRIO (existente) ==========
         const monthNamesList = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         const dayNamesList = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
         const staffRotationList = ["Júlio", "Carlos", "Leticia", "Gustavo", "Tatiane"];
@@ -481,7 +572,6 @@
             document.getElementById("month-label").innerText = monthNamesList[activeMonth];
             document.getElementById("year-label").innerText = activeYear;
             
-            // Sincroniza os selects de salto rápido com o mês/ano ativo atual
             document.getElementById("jump-month-select").value = activeMonth;
             document.getElementById("jump-year-select").value = activeYear;
             
@@ -567,14 +657,12 @@
             buildCalendar();
         };
 
-        // LÓGICA DO BOTÃO "IR" (SALTO RÁPIDO PARA MÊS/ANO)
         document.getElementById("jump-submit-btn").onclick = () => {
             activeMonth = parseInt(document.getElementById("jump-month-select").value);
             activeYear = parseInt(document.getElementById("jump-year-select").value);
             buildCalendar();
         };
 
-        // LÓGICA DE PESQUISA POR DATA INDIVIDUAL
         document.getElementById("search-submit-btn").onclick = () => {
             const dateValue = document.getElementById("search-date-input").value;
             if (!dateValue) return alert("Por favor, selecione uma data válida!");
@@ -605,7 +693,110 @@
             document.getElementById("search-modal").style.display = "none";
         };
 
+        // Fechar modal ao clicar no overlay (para ambos os modais)
+        document.querySelectorAll(".modal-overlay").forEach(overlay => {
+            overlay.addEventListener("click", function(e) {
+                if (e.target === this) {
+                    this.style.display = "none";
+                }
+            });
+        });
+
         buildCalendar();
+
+        // ========== FUNCIONALIDADE DE FIXAR (HOME) ==========
+        (function() {
+            const btnFix = document.getElementById("btn-add-to-home");
+            const footerLink = document.getElementById("footer-fix-link");
+            const installModal = document.getElementById("install-modal");
+            const installInstructions = document.getElementById("install-instructions");
+            const closeModal = document.getElementById("install-modal-close");
+
+            function getOS() {
+                const ua = navigator.userAgent || navigator.vendor || window.opera;
+                if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return 'ios';
+                if (/android/i.test(ua)) return 'android';
+                return 'other';
+            }
+
+            function getInstructions(os) {
+                if (os === 'ios') {
+                    return `
+                        <div class="install-step">
+                            <p><strong>📱 No iPhone ou iPad:</strong></p>
+                            <ol style="padding-left: 20px; margin-top: 8px;">
+                                <li>Toque no ícone <strong>Compartilhar</strong> <span style="font-size:20px;">⎔</span> (no Safari, é o quadrado com seta para cima).</li>
+                                <li>Role a tela para baixo e toque em <strong>"Adicionar à Tela de Início"</strong>.</li>
+                                <li>Confirme o nome e toque em <strong>"Adicionar"</strong>.</li>
+                            </ol>
+                            <p style="margin-top: 12px; color: var(--text-muted);">Pronto! O ícone aparecerá na sua tela inicial.</p>
+                        </div>
+                    `;
+                } else if (os === 'android') {
+                    return `
+                        <div class="install-step">
+                            <p><strong>🤖 No Android (Chrome):</strong></p>
+                            <ol style="padding-left: 20px; margin-top: 8px;">
+                                <li>Toque no menu (três pontinhos <span style="font-size:20px;">⋮</span>) no canto superior direito.</li>
+                                <li>Selecione <strong>"Adicionar à tela inicial"</strong> ou <strong>"Instalar aplicativo"</strong>.</li>
+                                <li>Confirme o nome e toque em <strong>"Adicionar"</strong>.</li>
+                            </ol>
+                            <p style="margin-top: 12px; color: var(--text-muted);">O atalho será criado como um app na sua home.</p>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="install-step">
+                            <p><strong>🌐 Em outros navegadores:</strong></p>
+                            <p>Use a opção <strong>"Adicionar à tela inicial"</strong> ou <strong>"Instalar"</strong> no menu do seu navegador.</p>
+                            <p style="margin-top: 8px; color: var(--text-muted);">Seu navegador deve oferecer essa funcionalidade para criar um atalho rápido.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            let deferredPrompt = null;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                // Mudar o texto do botão para "Instalar" quando disponível
+                btnFix.innerHTML = '<span class="icon">📲</span> <span class="label">Instalar</span>';
+                footerLink.innerHTML = '📲 Instalar App';
+            });
+
+            function showInstallModal() {
+                const os = getOS();
+                installInstructions.innerHTML = getInstructions(os);
+                installModal.style.display = 'flex';
+            }
+
+            function handleInstallClick(e) {
+                e.preventDefault();
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choice) => {
+                        if (choice.outcome === 'accepted') {
+                            console.log('Usuário instalou o app');
+                        } else {
+                            console.log('Usuário recusou');
+                        }
+                        deferredPrompt = null;
+                        // Volta ao texto original
+                        btnFix.innerHTML = '<span class="icon">🏠</span> <span class="label">Fixar</span>';
+                        footerLink.innerHTML = '🏠 Fixar na Home';
+                    });
+                } else {
+                    showInstallModal();
+                }
+            }
+
+            btnFix.addEventListener('click', handleInstallClick);
+            footerLink.addEventListener('click', handleInstallClick);
+
+            closeModal.addEventListener('click', () => {
+                installModal.style.display = 'none';
+            });
+        })();
     </script>
 </body>
 </html>
